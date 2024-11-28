@@ -1,0 +1,33 @@
+CREATE TABLE Tickets (
+    TicketID INT IDENTITY(1,1) PRIMARY KEY,          -- уникальный идентификатор заявки
+    TicketNumber NVARCHAR(50) NOT NULL,              -- номер заявки
+    CreatedDate DATETIME DEFAULT GETDATE(),           -- дата и время добавления
+    Status NVARCHAR(50) DEFAULT 'Новая'               -- статус заявки
+);
+
+
+CREATE TABLE Equipment (
+    EquipmentID INT IDENTITY(1,1) PRIMARY KEY,       -- уникальный идентификатор оргтехники
+    EquipmentType NVARCHAR(100) NOT NULL,            -- вид оргтехники
+    Model NVARCHAR(100) NOT NULL                       -- модель
+);
+
+CREATE TABLE Clients (
+    ClientID INT IDENTITY(1,1) PRIMARY KEY,           -- уникальный идентификатор клиента
+    FullName NVARCHAR(100) NOT NULL,                  -- ФИО клиента
+    PhoneNumber NVARCHAR(15) NOT NULL                 -- номер клиента
+);
+
+CREATE TABLE Problems (
+    ProblemID INT IDENTITY(1,1) PRIMARY KEY,          -- уникальный идентификатор проблемы
+    TicketID INT,                                     -- внешний ключ на таблицу Tickets
+    ClientID INT,                                     -- внешний ключ на таблицу Clients
+    EquipmentID INT,                                  -- внешний ключ на таблицу Equipment
+    Description NVARCHAR(255),                        -- описание проблемы
+    AssignedTo NVARCHAR(100),                         -- сотрудник, ответственный за заявку
+    Resolution NVARCHAR(255),                         -- решение проблемы (если применимо)
+    UpdatedDate DATETIME DEFAULT GETDATE(),           -- дата последнего обновления
+    FOREIGN KEY (TicketID) REFERENCES Tickets(TicketID),
+    FOREIGN KEY (ClientID) REFERENCES Clients(ClientID),
+    FOREIGN KEY (EquipmentID) REFERENCES Equipment(EquipmentID)
+);
