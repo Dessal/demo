@@ -1,0 +1,26 @@
+ALTER TABLE Requests
+ADD CONSTRAINT FK_Requests_Users
+FOREIGN KEY (UserID) REFERENCES Users(UserID);
+
+-- Добавление внешнего ключа для связи таблицы Comments с Requests
+ALTER TABLE Comments
+ADD CONSTRAINT FK_Comments_Requests
+FOREIGN KEY (RequestID) REFERENCES Requests(RequestID);
+
+-- Добавление внешнего ключа для связи таблицы Comments с Users
+ALTER TABLE Comments
+ADD CONSTRAINT FK_Comments_Users
+FOREIGN KEY (UserID) REFERENCES Users(UserID);
+
+новая таблица
+CREATE TABLE Categories (
+    CategoryID INT PRIMARY KEY IDENTITY(1,1),
+    CategoryName NVARCHAR(100) NOT NULL,
+    Description NVARCHAR(255),
+    CreatedAt DATETIME DEFAULT GETDATE()
+);
+
+ALTER TABLE Requests
+ADD CategoryID INT;
+ALTER TABLE Requests
+ADD CONSTRAINT FK_Requests_Categories FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID);
